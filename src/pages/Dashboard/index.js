@@ -13,18 +13,19 @@ const schema = Yup.object().shape({
 });
 
 export default function Dashboard() {
-  const [dados, setDados] = useState({
-    locator: '',
-    ean: '',
-    lot: '',
-    amount: '',
-    loading: false,
-  });
+  const [locator, setLocator] = useState('');
+  const [ean, setEan] = useState('');
+  const [lot, setLot] = useState('');
+  const [amount, setAmount] = useState('');
+  const [loading, setLoading] = useState(false);
 
   function handleSubmit({ locator, ean, lot, amount }) {
-    setDados({ loading: true });
-
-    setDados({ loading: false });
+    console.log({
+      locator,
+      ean,
+      lot,
+      amount,
+    });
   }
 
   return (
@@ -33,33 +34,25 @@ export default function Dashboard() {
         <h1>LOCALIZADOR</h1>
         <Input
           name="locator"
-          value={dados.locator}
-          onChange={text => setDados({ locator: text.value })}
+          value={locator}
+          onChange={text => setLocator(text.value)}
         />
 
         <h1>EAN</h1>
-        <Input
-          name="ean"
-          value={dados.ean}
-          onChange={text => setDados({ ean: text.value })}
-        />
+        <Input name="ean" value={ean} onChange={text => setEan(text.value)} />
 
         <h1>LOTE</h1>
-        <Input
-          name="lot"
-          value={dados.lot}
-          onChange={text => setDados({ lot: text.value })}
-        />
+        <Input name="lot" value={lot} onChange={text => setLot(text.value)} />
 
         <h1>QUANTIDADE</h1>
         <Input
           name="amount"
-          value={dados.amount}
-          onChange={text => setDados({ amount: text.value })}
+          value={amount}
+          onChange={text => setAmount(text.value)}
         />
 
-        <SubmitButton loginLoading={dados.loading}>
-          {dados.loading ? <FaSpinner color="#fff" size={14} /> : 'Acessar'}
+        <SubmitButton loginLoading={loading}>
+          {loading ? <FaSpinner color="#fff" size={14} /> : 'Acessar'}
         </SubmitButton>
       </Form>
     </Container>
