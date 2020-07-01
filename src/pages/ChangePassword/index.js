@@ -58,7 +58,6 @@ export default function ChangePassword() {
         password: newPassword,
       })
       .then(el => {
-        // console.log(el);
         if (el.status === 200) {
           toast.success('Senha alterada com sucesso!');
         }
@@ -78,7 +77,6 @@ export default function ChangePassword() {
           );
         }
       });
-    // console.log(err.response.data.error.message));
   }
 
   return (

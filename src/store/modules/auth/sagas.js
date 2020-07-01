@@ -15,14 +15,11 @@ export function* signIn({ payload }) {
       password,
     });
 
-    // console.log(response.data);
-
     const { token, user } = response.data;
 
     api.defaults.headers.Authorization = `Bearer ${token}`;
 
     yield put(signInSuccess(token, user));
-    console.log('Vou mudar a tela');
 
     history.push('/dashboard');
   } catch (err) {
