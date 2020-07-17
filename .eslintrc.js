@@ -26,6 +26,8 @@ module.exports = {
   ],
   rules: {
     'prettier/prettier': 'error',
+    'no-unused-expressions': 'off',
+    'no-nested-ternary': 'off',
     'react/jsx-filename-extension': [
       'warn',
       {

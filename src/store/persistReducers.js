@@ -6,7 +6,7 @@ export default reducers => {
     {
       key: 'webgrade',
       storage,
-      whitelist: ['auth', 'user'],
+      whitelist: ['auth', 'user', 'ean'],
     },
     reducers
   );

@@ -21,15 +21,15 @@ export default function Header() {
         <nav>
           <img src={logo} alt="Inventory" />
           <div>
-            <strong>GESTÃO DE INVENTÁRIO</strong>
+            <strong>INVENTÁRIO</strong>
             <small>CONTADOR</small>
           </div>
         </nav>
         <aside>
           <Profile>
             <div>
-              <strong>{profile.name}</strong>
-              <small>{profile.job}</small>
+              <strong>{profile.name ? profile.name : ''}</strong>
+              <small>{profile.job ? profile.job : ''}</small>
             </div>
             <button type="submit" onClick={handleLogout}>
               Sair

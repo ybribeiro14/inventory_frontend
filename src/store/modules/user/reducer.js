@@ -16,6 +16,10 @@ export default function user(state = INITIAL_STATE, action) {
         draft.profile = null;
         break;
       }
+      case '@user/UPDATE_PROFILE_FEATURE_STAT': {
+        draft.profile.feature.stat = action.payload;
+        break;
+      }
       default:
     }
   });
