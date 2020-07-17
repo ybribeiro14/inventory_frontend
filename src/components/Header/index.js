@@ -22,7 +22,11 @@ export default function Header() {
           <img src={logo} alt="Inventory" />
           <div>
             <strong>INVENTÁRIO</strong>
-            <small>CONTADOR</small>
+            <small>
+              {profile.job === 'Conferente'
+                ? 'CONTADOR'
+                : 'PAINEL ADMINISTRATIVO'}
+            </small>
           </div>
         </nav>
         <aside>

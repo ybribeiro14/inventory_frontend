@@ -21,7 +21,11 @@ export function* signIn({ payload }) {
 
     yield put(signInSuccess(token, user));
 
-    history.push('/dashboard');
+    if (user.job === 'Administrativo') {
+      history.push('/painel');
+    } else {
+      history.push('/dashboard');
+    }
   } catch (err) {
     toast.error('Falha na autenticação, verifique seus dados');
     yield put(signFailure());

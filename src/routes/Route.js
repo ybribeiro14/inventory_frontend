@@ -13,11 +13,15 @@ export default function RouteWrapper({
   ...rest
 }) {
   const { signed } = store.getState().auth;
+  const { profile } = store.getState().user;
   if (!signed && isPrivate) {
     return <Redirect to="/" />;
   }
 
   if (signed && !isPrivate) {
+    if (profile.job === 'Administrativo') {
+      return <Redirect to="/painel" />;
+    }
     return <Redirect to="/dashboard" />;
   }
 
