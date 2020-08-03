@@ -51,7 +51,9 @@ export default function Dashboard() {
   const profile = useSelector(state => state.user.profile);
   const listEans = useSelector(state => state.ean.dataEans);
   const atualLocator = useSelector(state => state.ean.locator);
-  async function handleSubmit() {
+  async function handleSubmit(event) {
+    event.preventDefault();
+    event.stopPropagation();
     const checkStatInventory = await api.get(
       `/stat_feature/${profile.id_feature}`
     );
@@ -61,8 +63,8 @@ export default function Dashboard() {
         'Detectamos uma mudança de status nesse inventário, será necessário realizar a contagem novamente!'
       );
 
-      await dispatch(updateProfileFeatureStat(checkStatInventory.data.stat));
-      await dispatch(clearData());
+      dispatch(updateProfileFeatureStat(checkStatInventory.data.stat));
+      dispatch(clearData());
 
       setLocator('');
       setEan('');
@@ -82,11 +84,11 @@ export default function Dashboard() {
 
         if (response.data) {
           toast.success('Registro feito com sucesso!');
-          locatorRef.current.focus();
           setLocator('');
           setEan('');
-          await dispatch(clearData());
+          dispatch(clearData());
           setLoading(false);
+          locatorRef.current.focus();
         } else {
           setLoading(false);
           toast.error(
@@ -232,6 +234,15 @@ export default function Dashboard() {
       }
     }
   }
+
+  const keyEnterLocator = event => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      event.stopPropagation();
+      checkLocator();
+    }
+  };
+
   async function checkEan() {
     if (ean.length > 14) {
       toast.error('EAN inválido, possui mais que 14 dígitos!');
@@ -338,6 +349,14 @@ export default function Dashboard() {
     }
   }
 
+  const keyEnterEan = event => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      event.stopPropagation();
+      checkEan();
+    }
+  };
+
   async function handleEmptyLocator() {
     if (address === '') {
       setValidAddres('O campo endereço não pode ser vazio!');
@@ -374,6 +393,7 @@ export default function Dashboard() {
             onChange={event => setLocator(event.target.value)}
             onBlur={() => checkLocator()}
             disabled={loading}
+            onKeyDown={keyEnterLocator}
           />
 
           <h1>EAN</h1>
@@ -385,6 +405,7 @@ export default function Dashboard() {
             onBlur={() => checkEan()}
             disabled={loading}
             type="number"
+            onKeyDown={keyEnterEan}
           />
 
           <span>{description}</span>
