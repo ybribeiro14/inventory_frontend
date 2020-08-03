@@ -17,14 +17,19 @@ export function* signIn({ payload }) {
 
     const { token, user } = response.data;
 
-    api.defaults.headers.Authorization = `Bearer ${token}`;
+    if (user.feature) {
+      api.defaults.headers.Authorization = `Bearer ${token}`;
 
-    yield put(signInSuccess(token, user));
+      yield put(signInSuccess(token, user));
 
-    if (user.job === 'Administrativo') {
-      history.push('/painel');
+      if (user.job === 'Administrativo') {
+        history.push('/painel');
+      } else {
+        history.push('/dashboard');
+      }
     } else {
-      history.push('/dashboard');
+      toast.error('Usuário informado não está vinculado a nenhum inventário.');
+      yield put(signFailure());
     }
   } catch (err) {
     toast.error('Falha na autenticação, verifique seus dados');
