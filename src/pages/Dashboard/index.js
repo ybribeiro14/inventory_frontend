@@ -33,6 +33,7 @@ export default function Dashboard() {
   const [amount, setAmount] = useState('');
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
+  const [showAlertEan, setShowAlertEan] = useState(false);
   const [inputAddress, setInputAddres] = useState(false);
   const [validAddress, setValidAddres] = useState(false);
   const [dataLocator, setDataLocator] = useState({});
@@ -191,6 +192,10 @@ export default function Dashboard() {
     setShow(false);
     locatorRef.current.focus();
   };
+
+  const handleCloseModalEan = () => {
+    setShowAlertEan(false);
+  };
   const clearDataEan = async () => {
     setEan('');
     await dispatch(clearData());
@@ -252,7 +257,6 @@ export default function Dashboard() {
     }
     if (profile.feature.model !== 3) {
       if (!profile.feature.validate_ean) {
-        console.log(dataLocator);
         if (profile.feature.model === 2 && dataLocator) {
           // Verificar se o EAN já foi contando neste local, nesta contagem. Correr array de EAN's se encontrar o EAN não permitir continuar;
 
@@ -330,18 +334,30 @@ export default function Dashboard() {
       setEan('');
       toast.error('Informe o localizador.');
     } else if (ean !== '') {
-      const payload = {
-        ean,
-        id_feature: profile.id_feature,
-        locator,
-      };
+      if (profile.feature.same_ean) {
+        const eanDifferent =
+          listEans.length > 0
+            ? listEans.filter(eanList => eanList.ean !== ean)
+            : false;
+        if (eanDifferent && eanDifferent.length !== 0) {
+          setShowAlertEan(true);
+          setEan('');
+          return;
+        }
+      } else {
+        const payload = {
+          ean,
+          id_feature: profile.id_feature,
+          locator,
+        };
 
-      const response = await api.post('check_ean_locator', payload);
+        const response = await api.post('check_ean_locator', payload);
 
-      if (response.data.statusCode !== 200) {
-        setEan('');
-        toast.error(response.data.error);
-        return;
+        if (response.data.statusCode !== 200) {
+          setEan('');
+          toast.error(response.data.error);
+          return;
+        }
       }
 
       await dispatch(insertEanList(ean, locator));
@@ -572,6 +588,25 @@ export default function Dashboard() {
               </SubmitButtonYesNo>
             </>
           )}
+        </DivModalButton>
+      </Modal>
+
+      <Modal
+        show={showAlertEan}
+        onHide={handleCloseModalEan}
+        backdrop="static"
+        keyboard={false}
+        centered
+      >
+        <Modal.Body>
+          <TextModal>
+            EAN Bipado é diferente dos EAN's da lista atual!! Não é permitido!
+          </TextModal>
+        </Modal.Body>
+        <DivModalButton>
+          <SubmitButtonYesNo onClick={handleCloseModalEan} model={0}>
+            Voltar
+          </SubmitButtonYesNo>
         </DivModalButton>
       </Modal>
       <InventoryData>
