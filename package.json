@@ -16,7 +16,7 @@
     "dotenv": "^8.2.0",
     "history": "^4.10.1",
     "immer": "^5.0.0",
-    "moment": "^2.27.0",
+    "moment": "^2.29.2",
     "polished": "^3.4.2",
     "prop-types": "^15.7.2",
     "react": "^16.11.0",
